@@ -1,0 +1,53 @@
+package Telefonserver;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		ArrayList<Integer> nummer = new ArrayList<Integer>();
+		String name = "";
+
+while (true) {
+	System.out.print("\033[H\033[2J");
+	System.out.println("\n\n##############################################");
+	System.out.println("Telefonserver gestartet \nNamen oder Nummer eingeben startet die Suche.");
+	System.out.println("EXIT beendet das Program. \n");
+	
+	// Eingabe mit java.util.Scanner einlesen
+	Scanner sc = new Scanner(System.in);
+	String[] eingabe = sc.nextLine().trim().split(" ");
+	
+	// überprüft auf eine leere Eingabe
+	if (eingabe.length == 0 || eingabe[0].equals("")) {
+		System.out.println("Leere Eingaben sind Ungültig!");
+		continue;
+	}
+	
+	// überprüft auf 'exit'
+	if (eingabe[0].equals("EXIT")) {
+		System.out.println("Programm wurde beendet");
+		System.exit(0);
+	}
+				
+				
+	// Schleife untersucht String Array 
+	for (int i = 0; i < eingabe.length; i++) {
+		if (eingabe[i].matches("\\d*")) {
+			nummer.add(Integer.parseInt(eingabe[i]));
+		} else if (eingabe[i].matches("\\D*")) {
+			name += eingabe[i].trim() + " ";
+		} else {
+			System.out.println(eingabe[i] + " ist ungültig");
+		}
+	}
+
+	// debug
+	System.out.println(eingabe[0]);
+}
+
+	}
+
+}

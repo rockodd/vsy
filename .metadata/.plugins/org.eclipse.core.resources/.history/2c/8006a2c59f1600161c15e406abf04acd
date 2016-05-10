@@ -1,0 +1,29 @@
+package Telefonserver;
+
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+while (true) {
+	
+	System.out.println("Telefonserver gestartet");
+	System.out.println("Namen oder Nummer eingeben startet die Suche.");
+	System.out.println("EXIT beendet das Program.");
+	
+	// Eingabe mit java.util.Scanner einlesen
+	Scanner sc = new Scanner(System.in);
+	String eingabe[] = sc.next();
+	
+	// überprüft auf eine leere Eingabe
+	if (eingabe.length == 0 || eingabe[0].equals("")) {
+		System.out.println("Leere Eingaben sind Ungültig!");
+		continue;
+	}
+	
+}
+
+	}
+
+}
