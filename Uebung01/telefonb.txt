@@ -1,9 +1,10 @@
-Müller		4711
+ï»¿
+MÃ¼ller		4711
 von Leertaste 	3456
-Öl		4567
-Müller	 	1234
+Ã–l		4567
+MÃ¼ller	 	1234
 Meier   	4711
 Schmitt  	0815
-Müller   	4712
+MÃ¼ller   	4712
 Meier    	0816
-Meßmer		9114
+MeÃŸmer		9114

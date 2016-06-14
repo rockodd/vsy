@@ -112,14 +112,14 @@ public class Main {
 			
 			
 			// private Thread Klasse die die Suche realisiert
-			class SuchThread extends Thread{
+			public class SuchThread extends Thread{
 				
 				String name;
 				Integer number;
 
 				// konstruktor wird mit Such Objekt aufgerufen und in seine Instanceof
 				// Klasse zurück gecastet
-				SuchThread(Object input) {
+				public SuchThread(Object input) {
 					if (input instanceof Integer)
 						this.number = (Integer) input;
 					if (input instanceof String)
