@@ -6,11 +6,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+/**
+ * Main Klasse startet einzelne Threads zur Suche in einem externen Telefonbuch
+ * 
+ * @className Main
+ * @author Robert Ullmann
+ * @date 10.05.2016
+ */
 
 public class Main {
-	static Vector<String> ausgabeName = new Vector<String>();
-	static Vector<String> ausgabeNummer = new Vector<String>();
-	static Vector<String> ausgabe = new Vector<String>();
+	static ArrayList<String> ausgabeName = new ArrayList<String>();
+	static ArrayList<String> ausgabeNummer = new ArrayList<String>();
+	static CopyOnWriteArrayList<String> ausgabe = new CopyOnWriteArrayList<String>();
 
 
 	private static Main telbuch = new Main();
@@ -37,13 +46,13 @@ public class Main {
 			Scanner sc = new Scanner(System.in);
 			String[] eingabe = sc.nextLine().trim().split(" ");
 
-			// überprüft auf eine leere Eingabe
+			// ï¿½berprï¿½ft auf eine leere Eingabe
 			if (eingabe.length == 0 || eingabe[0].equals("")) {
-				System.out.println("Leere Eingaben sind Ungültig!");
+				System.out.println("Leere Eingaben sind UngÃ¼ltig!");
 				continue;
 			}
 
-			// überprüft auf 'exit'
+			// ï¿½berprï¿½ft auf 'exit'
 			if (eingabe[0].equals("EXIT")) {
 				System.out.println("Programm wurde beendet");
 				System.exit(0);
@@ -51,23 +60,23 @@ public class Main {
 
 			// Schleife untersucht String Array
 			for (int i = 0; i < eingabe.length; i++) {
-				if (eingabe[i].matches("\\d*")) {
+				if (eingabe[i].matches("\\d+")) {
 					nummer.add(Integer.parseInt(eingabe[i]));
-				} else if (eingabe[i].matches("\\D*")) {
+				} else if (eingabe[i].matches("\\D+")) {
 					name += eingabe[i].trim() + " ";
 				} else {
-					System.out.println(" Eingabe ungültig!");
+					System.out.println(" Eingabe ungï¿½ltig!");
 				}
 			}
 
 			// wenn eine Nummer und ein Name eingegeben wird,
-			// dann werden zwei Nebenläufige Threads gestartet.
+			// dann werden zwei Nebenlï¿½ufige Threads gestartet.
 			if (!name.equals("") && nummer.size() != 0) {
 				Thread thread1 = telbuch.new SuchThread(name.trim());
 				Thread thread2 = telbuch.new SuchThread(nummer.get(0));
 				thread1.start();
-				thread1.join();
 				thread2.start();
+				thread1.join();
 				thread2.join();
 			} else {
 				// wurde nur eine nummer gesucht dann startet die suche in einem
@@ -108,18 +117,25 @@ public class Main {
 		}
 	
 
-
+	/**
+	 * private Thread Klasse die die Suche realisiert
+	 * 
+	 * @className SuchThread
+	 * @author Robert Ullmann
+	 * @date 10.05.2016
+	 */
 			
 			
 			// private Thread Klasse die die Suche realisiert
 			public class SuchThread extends Thread{
+
 				
 				String name;
 				Integer number;
 
 				// konstruktor wird mit Such Objekt aufgerufen und in seine Instanceof
-				// Klasse zurück gecastet
-				public SuchThread(Object input) {
+				// Klasse zurï¿½ck gecastet
+				SuchThread(Object input) {
 					if (input instanceof Integer)
 						this.number = (Integer) input;
 					if (input instanceof String)
@@ -128,11 +144,11 @@ public class Main {
 
 				// thread run methode
 				public void run() {
-					synchronized (ausgabe) {	
+						
 					try {
 						// liest per Bufferedreader die txt ein und
-						// überprüft 
-						BufferedReader in = new BufferedReader(new FileReader("C:\\Users\\User\\workspaces\\VerteilteSysteme\\Uebung01\\telefonb.txt"));
+						// ï¿½berprï¿½ft 
+						BufferedReader in = new BufferedReader(new FileReader("/home/BEUTH/s59322/git/vsy/Uebung01/telefonb.txt"));
 						String zeile = null;
 						
 						if (name == null) {
@@ -140,8 +156,9 @@ public class Main {
 							while ((zeile = in.readLine()) != null) {
 								
 									
-								
-								if (zeile.contains(number.toString())) {
+								String[] eingabenummer = zeile.trim().split("\t");
+								//if (zeile.contains(number.toString())) {
+								if (eingabenummer[1].equals(number.toString())) {
 									System.out.println("A");
 									ausgabe.add(zeile);
 									found = true;
@@ -157,8 +174,8 @@ public class Main {
 							while ((zeile = in.readLine()) != null) {
 								
 									
-								
-								if (zeile.toLowerCase().contains(name.toLowerCase())) {
+								String[] eingabename = zeile.trim().split("\t");
+								if (eingabename[0].toLowerCase().equals(name.toLowerCase())) {
 									System.out.println("B");
 									ausgabe.add(zeile);
 									found = true;
@@ -176,7 +193,7 @@ public class Main {
 					}
 				}
 			}
-}
+
 			// debug
 			// System.out.println(eingabe[0]);
 		}
