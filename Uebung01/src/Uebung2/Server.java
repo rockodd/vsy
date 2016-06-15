@@ -3,11 +3,7 @@
  */
 package Uebung2;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
@@ -21,9 +17,14 @@ public class Server extends Thread {
 	private ServerSocket serverSocket = null;
 	private BufferedReader in = null;
 	private BufferedWriter out = null;
+	private String responseString = "";
 
-	static final String HTML_START = "<html>"
-			+ "<title>HTTP POST Server in java</title>" + "<body>";
+	static final String HTML_START = "<html> \n"
+			+"<head> \n"
+			+ "<title>HTTP POST Server in java</title> \n"
+			+ "<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" /> \n"
+			+ "</head> \n"
+			+ "<body> \n";
 	static final String HTML_END = "</body>" + "</html>";
 	private String responseStringIndex = Server.HTML_START
 			+ "<h2 align=center>Telefonverzeichnis</h2>\n"
@@ -48,6 +49,7 @@ public class Server extends Thread {
 
 	public void run() {
 		try {
+			responseString = "";
 			// BufferReader zum lesen des Client Inputs
 			System.out.println("The Client " + socketClient.getInetAddress()
 					+ ":" + socketClient.getPort() + " is connected");
@@ -60,7 +62,7 @@ public class Server extends Thread {
 
 			// Request in String
 			String httpString = in.readLine();
-			String responseString = "";
+
 
 			// Request unterteilen
 			String[] splitString = httpString.split(" ");
@@ -83,20 +85,21 @@ public class Server extends Thread {
 					// Baue HTML-Suchen-Seite
 					responseString = responseStringIndex;
 					responseString += Server.HTML_END;
-
-					if (httpString.startsWith("GET /?D=Server+beenden")) {
-						// Baue HTML-Exit-Seite
-						responseString = Server.HTML_START
-								+ "<h2 align=center>Server Beendet</h2>\n"
-								+ Server.HTML_END;
-
-						System.out.println("Server beendet!");
-						ServerMain.exit = true;
-
-						;
-
-					} 
 				}
+
+				else if (httpRequest.equals("/?D=Server+beenden")) {
+					// Baue HTML-Exit-Seite
+					responseString = Server.HTML_START
+							+ "<h2 align=center>Server Beendet</h2>\n"
+							+ Server.HTML_END;
+
+					System.out.println("Server beendet!");
+					ServerMain.exit = true;
+
+					;
+
+				}
+
 				else if (httpString.startsWith("GET /?")) {
 
 					System.out.println(Arrays.toString(splitString));
@@ -189,10 +192,14 @@ public class Server extends Thread {
 				}
 			sendResponse(responseString);
 		}
-
-		catch (Exception e) {
+		catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 
 	}
 

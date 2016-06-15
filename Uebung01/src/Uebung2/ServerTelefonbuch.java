@@ -3,10 +3,7 @@
  */
 package Uebung2;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -41,7 +38,7 @@ public class ServerTelefonbuch {
 		Integer number;
 
 		// konstruktor wird mit Such Objekt aufgerufen und in seine Instanceof
-		// Klasse zurück gecastet
+		// Klasse zurÃ¼ck gecastet
 		SuchThread(Object input) {
 			if (input instanceof Integer)
 				this.number = (Integer) input;
@@ -54,7 +51,7 @@ public class ServerTelefonbuch {
 			try {
 				ausgabeName=new ArrayList<String>();
 				ausgabeNummern=new ArrayList<String>();
-				// ließt per Bufferreader die telefonbuch txt ein und überprüft
+				// lieÃŸt per Bufferreader die telefonbuch txt ein und Ã¼berprÃ¼ft
 				// ob es das such objekt ist
 				BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("telefonb.txt"), "UTF8"));
 				String zeile = null;
@@ -85,7 +82,19 @@ public class ServerTelefonbuch {
 								+ " war erfolglos!");
 					}
 				}
-			} catch (IOException e) {
+
+
+			}
+
+
+			catch (FileNotFoundException e) {
+
+				System.out.println("File not found!!");
+
+
+			}
+
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
